@@ -3,10 +3,22 @@ import textwrap
 
 # Define the color mapping
 COLOR_MAPPING = {
-    '00': (0, 0, 0),         # Black
-    '01': (255, 0, 0),       # Red
-    '10': (0, 255, 0),       # Green
-    '11': (0, 0, 255)        # Blue
+    '0000': (0, 0, 0),          # Black
+    '0001': (128, 0, 0),        # Dark Red
+    '0010': (0, 128, 0),        # Dark Green
+    '0011': (0, 0, 128),        # Dark Blue
+    '0100': (128, 128, 0),      # Dark Yellow
+    '0101': (128, 0, 128),      # Dark Magenta
+    '0110': (0, 128, 128),      # Dark Cyan
+    '0111': (64, 64, 64),       # Dark Gray
+    '1000': (192, 192, 192),    # Light Gray
+    '1001': (255, 0, 0),        # Red
+    '1010': (0, 255, 0),        # Green
+    '1011': (0, 0, 255),        # Blue
+    '1100': (255, 255, 0),      # Yellow
+    '1101': (255, 0, 255),      # Magenta
+    '1110': (0, 255, 255),      # Cyan
+    '1111': (255, 255, 255)     # White
 }
 
 def text_to_binary(text):
@@ -18,18 +30,18 @@ def pad_binary_data(binary_data, size):
     return binary_data.ljust(size, '0')
 
 def create_image_from_text(text, output_path):
-    # Convert text to binary and pad to 8192 bits (1024 bytes)
+    # Convert text to binary and pad to 16384 bits (2048 bytes)
     binary_data = text_to_binary(text)
-    binary_data = pad_binary_data(binary_data, 8192)
+    binary_data = pad_binary_data(binary_data, 16384)
 
     # Create a new 64x64 image
     img = Image.new('RGB', (64, 64))
 
     # Iterate through the binary data in 2-bit chunks and set pixel colors
-    for i in range(0, len(binary_data), 2):
-        x = (i // 2) % 64
-        y = (i // 2) // 64
-        color_code = binary_data[i:i+2]
+    for i in range(0, len(binary_data), 4):
+        x = (i // 4) % 64
+        y = (i // 4) // 64
+        color_code = binary_data[i:i+4]
         color = COLOR_MAPPING[color_code]
         img.putpixel((x, y), color)
 
