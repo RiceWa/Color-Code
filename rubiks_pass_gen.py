@@ -37,6 +37,11 @@ def generate_password_from_cube(cube_faces, seed, length=16):
     binary_data = ''.join(matrix_to_binary(face, matrix_positions, color_mapping) for face in cube_faces)
     
     # Convert binary data to a password
+
+    # Takes 8 Bits and converts to an int
+    # Use Modulus operator to keep number below number of char in charset
+    # Retrieve character from charset and append to password
+    # Truncate result to keep length to 16 or less characters
     password = ''
     for i in range(0, len(binary_data), 8):
         byte = binary_data[i:i+8]
