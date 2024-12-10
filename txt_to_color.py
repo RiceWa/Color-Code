@@ -1,49 +1,44 @@
 from PIL import Image
-import textwrap
 
-# Define the color mapping
-COLOR_MAPPING = {
-    '0000': (0, 0, 0),          # Black
-    '0001': (128, 0, 0),        # Dark Red
-    '0010': (0, 128, 0),        # Dark Green
-    '0011': (0, 0, 128),        # Dark Blue
-    '0100': (128, 128, 0),      # Dark Yellow
-    '0101': (128, 0, 128),      # Dark Magenta
-    '0110': (0, 128, 128),      # Dark Cyan
-    '0111': (64, 64, 64),       # Dark Gray
-    '1000': (192, 192, 192),    # Light Gray
-    '1001': (255, 0, 0),        # Red
-    '1010': (0, 255, 0),        # Green
-    '1011': (0, 0, 255),        # Blue
-    '1100': (255, 255, 0),      # Yellow
-    '1101': (255, 0, 255),      # Magenta
-    '1110': (0, 255, 255),      # Cyan
-    '1111': (255, 255, 255)     # White
-}
+def pad_text(text):
+    # Ensure the length of the text is a multiple of 3 by padding with zero-width spaces
+    while len(text) % 3 != 0:
+        text += '\u200B'  # Zero-width space character
+    return text
 
-def text_to_binary(text):
-    # Convert text to binary, padded to 8 bits per character
-    return ''.join(format(ord(char), '08b') for char in text)
+def text_to_rgb_chunks(text):
+    # Split the text into chunks of 3 characters each
+    chunks = [text[i:i+3] for i in range(0, len(text), 3)]
+    rgb_values = []
 
-def pad_binary_data(binary_data, size):
-    # Pad the binary data to fit the required size (8192 bits for 64x64)
-    return binary_data.ljust(size, '0')
+    for chunk in chunks:
+        # Convert each character to its 8-bit binary representation
+        binary_data = ''.join(format(ord(char), '08b') for char in chunk)
+        
+        # Extract the Red, Green, and Blue values (8 bits each)
+        r = int(binary_data[0:8], 2)
+        g = int(binary_data[8:16], 2)
+        b = int(binary_data[16:24], 2)
+
+        rgb_values.append((r, g, b))
+
+    return rgb_values
 
 def create_image_from_text(text, output_path):
-    # Convert text to binary and pad to 16384 bits (2048 bytes)
-    binary_data = text_to_binary(text)
-    binary_data = pad_binary_data(binary_data, 16384)
+    # Pad the text so its length is a multiple of 3
+    padded_text = pad_text(text)
+    rgb_values = text_to_rgb_chunks(padded_text)
 
-    # Create a new 64x64 image
-    img = Image.new('RGB', (64, 64))
+    # Determine the image dimensions (64x64 for simplicity)
+    img_size = 64
+    img = Image.new('RGB', (img_size, img_size))
 
-    # Iterate through the binary data in 2-bit chunks and set pixel colors
-    for i in range(0, len(binary_data), 4):
-        x = (i // 4) % 64
-        y = (i // 4) // 64
-        color_code = binary_data[i:i+4]
-        color = COLOR_MAPPING[color_code]
-        img.putpixel((x, y), color)
+    # Set pixels based on RGB values
+    for i, (r, g, b) in enumerate(rgb_values):
+        x = i % img_size
+        y = i // img_size
+        if y < img_size:
+            img.putpixel((x, y), (r, g, b))
 
     # Save the image
     img.save(output_path)
