@@ -58,13 +58,14 @@ def generate_password_from_cube(cube_faces, seed, length=16):
 # Red is bottom for White and Top for Yellow.
 
 # I will eventually make a vision system for this
+# With the current scramble, the cube is solved
 example_cube_faces = [
-    ['White', 'Red', 'Blue', 'Green', 'White', 'Orange', 'Yellow', 'Red', 'Blue'],  # White
-    ['Green', 'Yellow', 'Orange', 'White', 'Yellow', 'Blue', 'Green', 'Red', 'Orange'],  # Yellow
-    ['Blue', 'Green', 'Red', 'Orange', 'Blue', 'Yellow', 'White', 'Green', 'Red'],  # Blue
-    ['Red', 'White', 'Yellow', 'Blue', 'Green', 'Orange', 'Red', 'White', 'Yellow'],  # Green
-    ['Yellow', 'Orange', 'Green', 'Blue', 'Red', 'White', 'Yellow', 'Orange', 'Green'],  # Red
-    ['Orange', 'Blue', 'White', 'Yellow', 'Orange', 'Green', 'Red', 'Blue', 'White']  # Orange
+    ['White', 'White', 'White', 'White', 'White', 'White', 'White', 'White', 'White'],  # Center White
+    ['Yellow', 'Yellow', 'Yellow', 'Yellow', 'Yellow', 'Yellow', 'Yellow', 'Yellow', 'Yellow'],  # Center Yellow
+    ['Blue', 'Blue', 'Blue', 'Blue', 'Blue', 'Blue', 'Blue', 'Blue', 'Blue'],  # Center Blue
+    ['Green', 'Green', 'Green', 'Green', 'Green', 'Green', 'Green', 'Green', 'Green'],  # Center Green
+    ['Red', 'Red', 'Red', 'Red', 'Red', 'Red', 'Red', 'Red', 'Red'],  # Center Red
+    ['Orange', 'Orange', 'Orange', 'Orange', 'Orange', 'Orange', 'Orange', 'Orange', 'Orange', ]  # Center Orange
 ]
 
 # Generate a password using a seed
