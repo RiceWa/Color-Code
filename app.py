@@ -16,7 +16,7 @@ try:
                 st.warning("Please enter some text.")
             else:
                 img = create_image_from_text(text)
-                st.image(img, caption="Generated image", use_container_width=True)
+                st.image(img, caption="Generated image", width=True)
                 buf = io.BytesIO()
                 img.save(buf, format="PNG")
                 st.download_button("Download image", buf.getvalue(),
