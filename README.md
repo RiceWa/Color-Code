@@ -3,6 +3,7 @@ Color Code
 An app that encodes text into PNG images and decode PNGs back into text.
 
 Give it a test [here](https://ricewa-color-code-app-scbiia.streamlit.app/)
+
 Features
 
 - Text → Image: Enter text, convert to PNG, download.
